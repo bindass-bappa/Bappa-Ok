@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Chat App</title>
+</head>
+<body>
+  <h3>Online Chat</h3>
+
+  <ul id="messages"></ul>
+
+  <input id="msg" placeholder="Type message">
+  <button onclick="send()">Send</button>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+    const list = document.getElementById("messages");
+
+    socket.on("chat", (msg) => {
+      const li = document.createElement("li");
+      li.innerText = msg;
+      list.appendChild(li);
+    });
+
+    function send() {
+      const input = document.getElementById("msg");
+      if (input.value === "") return;
+      socket.emit("chat", input.value);
+      input.value = "";
+    }
+  </script>
+</body>
+</html>
